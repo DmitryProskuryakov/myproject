@@ -24,7 +24,7 @@
         <td th:text="${user.getSurname()}"/>
         <td th:text="${user.getAge()}"/>
         <td>
-            <a th:href="@{/users/getall?id={num}(num=${user.getId()})}" th:text="Choose"></a>
+            <a th:href="@{/users/get-all?id={num}(num=${user.getId()})}" th:text="Choose"></a>
         </td>
     </tr>
     </tbody>

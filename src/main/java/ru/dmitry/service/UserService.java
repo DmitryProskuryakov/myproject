@@ -1,51 +1,46 @@
 package ru.dmitry.service;
 
-import org.springframework.stereotype.Component;
-import ru.dmitry.dao.UserDAO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ru.dmitry.dao.UserDao;
 import ru.dmitry.model.User;
 
 
 import java.util.List;
+import java.util.Optional;
 
-@Component
-public class UserService implements UserServiceInterface{
-    private UserDAO userDAO = new UserDAO();
-
-    public List<User> getAllUsers() {
-        return userDAO.getAllUsers();
+@Service
+@Transactional(readOnly = true)
+public class UserService {
+    private final UserDao userDao;
+    @Autowired
+    public UserService(UserDao userDao) {
+        this.userDao = userDao;
     }
 
-    @Override
-    public User getUser(int id) {
-        return userDAO.getUser(id);
+    public List<User> findAll() {
+        return userDao.findAll();
     }
 
-    @Override
-    public void addUser(User user) {
-        userDAO.addUser(user);
+    public User findOne(int id) {
+        Optional<User> foundPerson = userDao.findById(id);
+
+        return foundPerson.orElse(null);
     }
 
-    @Override
-    public void createTable() {
-        userDAO.createTable();
+    @Transactional
+    public void save(User user) {
+        userDao.save(user);
+    }
+    @Transactional
+    public void update(int id, User updatedPerson) {
+        updatedPerson.setId(id);
+        userDao.save(updatedPerson);
     }
 
-    @Override
-    public void dropUsersTable() {
-        userDAO.dropUsersTable();
-    }
-
-    @Override
-    public void removeUserById(int id) {
-        userDAO.removeUserBtId(id);
-    }
-
-    @Override
-    public void cleanUsersTable() {
-        userDAO.cleanUsersTable();
-    }
-    @Override
-    public void changeUser(int id, User user) {
-        userDAO.changeUser(id, user);
+    @Transactional
+    public void delete(int id) {
+        userDao.deleteById(id);
     }
 }

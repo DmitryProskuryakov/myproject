@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.dmitry.dao.UserDao;
 import ru.dmitry.model.User;
 
-
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +13,7 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class UserService {
     private final UserDao userDao;
+
     @Autowired
     public UserService(UserDao userDao) {
         this.userDao = userDao;
@@ -33,6 +33,7 @@ public class UserService {
     public void save(User user) {
         userDao.save(user);
     }
+
     @Transactional
     public void update(int id, User updatedPerson) {
         updatedPerson.setId(id);
